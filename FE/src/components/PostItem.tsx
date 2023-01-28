@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { FaRegComment } from 'react-icons/fa';
-import profileStranger from '../assets/image/profile-stranger.jpg';
 import { deletePostService } from '../features/deletePostService';
 import { getProfileServiceById } from '../features/getProfileService';
 import { getOwnProfile } from '../features/profileService';
@@ -9,6 +8,8 @@ import { PostType } from './PostList';
 function PostItem({ id, caption, image, user_id }: PostType) {
   const [username, setUsername] = useState('');
   const [myUsername, setMyUsername] = useState('');
+  const [imageBufferProfile, setImageBufferProfile] = useState<any>(null);
+  const [image64Profile, setImage64Profile] = useState('');
   
   const image64 = _arrayBufferToBase64(image.data)
 
@@ -39,15 +40,23 @@ function PostItem({ id, caption, image, user_id }: PostType) {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getOwnProfile();
-      if (!result.error && result.user) setMyUsername(result.user.username);
+      if (!result.error && result.user) {
+        setImageBufferProfile(result.user.image.data);
+        setMyUsername(result.user.username);
+      }
     };
     fetchData();
   }, [myUsername]);
 
+  useEffect(() => {
+    if (imageBufferProfile) setImage64Profile(_arrayBufferToBase64(imageBufferProfile));
+  }, [image64Profile, imageBufferProfile]);
+
   return (
     <div className='mb-4'>
       <div className='border-x-[1px] border-t-[1px] rounded-lg rounded-b-none px-4 py-2 flex gap-2'>
-        <img className='object-cover w-12 h-12 rounded-full' src={profileStranger} alt="" referrerPolicy='no-referrer' />
+        <img className='object-cover w-12 h-12 rounded-full' 
+        src={image64Profile ? `data:image/png;base64,${image64Profile}` : 'https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2022/08/11/1722136995.jpg'} alt="" referrerPolicy='no-referrer' />
         <p className='my-auto text-sm'>{username}</p>
         { myUsername === username && <p onClick={deletePost} className='text-[#EA4335] font-medium ml-auto my-auto'>Delete</p>}
       </div>

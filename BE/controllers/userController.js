@@ -74,6 +74,18 @@ const changePassword = (req, res, next) => {
   });
 }
 
+const changeImage = (req, res, next) => {
+  let accessToken = req.headers.authorization;
+  if (accessToken) accessToken = accessToken.substring(7, accessToken.length);
+  const decoded = jwt.verify(accessToken, JWT_SECRET_KEY);
+  User.update({ 
+    image: req.files.image.data 
+  }, { where: { id: decoded.id }}).then(result => {
+    if (result) res.status(200).json({message: 'success'});
+    else res.status(400).json({message: 'fail'});
+  });
+}
+
 const isUserStillAuthed = (req, res, next) => {
   let accessToken = req.headers.authorization;
   if (accessToken) accessToken = accessToken.substring(7, accessToken.length);
@@ -96,4 +108,5 @@ export default {
   register,
   isUserStillAuthed,
   changePassword,
+  changeImage,
 };
