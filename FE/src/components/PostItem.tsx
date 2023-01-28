@@ -32,7 +32,10 @@ function PostItem({ id, caption, image, user_id }: PostType) {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getProfileServiceById(user_id);
-      if (!result.error) setUsername(result.user.username);
+      if (!result.error) {
+        setUsername(result.user.username);
+        if (result.user.image) setImageBufferProfile(result.user.image.data);
+      } 
     }
     fetchData();
   }, [user_id])
@@ -40,10 +43,7 @@ function PostItem({ id, caption, image, user_id }: PostType) {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getOwnProfile();
-      if (!result.error && result.user) {
-        setImageBufferProfile(result.user.image.data);
-        setMyUsername(result.user.username);
-      }
+      if (!result.error && result.user) setMyUsername(result.user.username);
     };
     fetchData();
   }, [myUsername]);

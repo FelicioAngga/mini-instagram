@@ -64,7 +64,7 @@ function ChangeProfile() {
   useEffect(() => {
     const fetchData = async () => {
       const result = await getOwnProfile()
-      if (!result.error) setImageBuffer(result.user.image.data);
+      if (!result.error && result.user.image) setImageBuffer(result.user.image.data);
     }
     fetchData();
   }, []);

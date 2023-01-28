@@ -27,7 +27,7 @@ function NavBar() {
       const result = await getOwnProfile();
       if (!result.error && result.user) {
         setUsername(result.user.username);
-        setImageBuffer(result.user.image.data);
+        if (result.user.image) setImageBuffer(result.user.image.data);
       } 
     };
     fetchData();
