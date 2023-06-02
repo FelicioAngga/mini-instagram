@@ -6,6 +6,7 @@ import Profile from './pages/Profile';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import Chat from './pages/Chat';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/signup' element={<SignupPage />} />
         <Route path='/add-post' element={<AddPost />} />
         <Route path='/change-profile' element={<Profile />} />
+        <Route path='/chat' element={<Chat />} />
       </Routes>
     </div>
   );

@@ -18,3 +18,8 @@ declare module "*.png" {
   const value: any;
   export default value;
 }
+
+declare module "*.py" {
+  const value: any;
+  export default value;
+}
